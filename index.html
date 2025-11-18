@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Masquerade // RSVP</title>
+  <title>CROSSED WIRES // RSVP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -50,17 +50,24 @@
       to   { transform: rotate(360deg) scale(1.05); }
     }
     h1 {
-      font-size: 2.2rem;
-      margin: 0 0 8px;
+      font-size: 2.0rem;
+      margin: 0 0 4px;
     }
     #glitch {
       position: relative;
       display: inline-block;
     }
+    .subheader {
+      font-size: 0.8rem;
+      color: #ccc;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
     .meta-block {
-      margin-top: 16px;
+      margin-top: 12px;
       border-top: 1px solid #444;
-      padding-top: 12px;
+      padding-top: 10px;
       font-size: 0.8rem;
     }
     .meta-label {
@@ -80,12 +87,18 @@
       color: #888;
       font-style: italic;
     }
+    .description {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #ddd;
+      line-height: 1.4;
+    }
     .divider {
       border-top: 1px solid #333;
       margin: 18px 0;
     }
     .rsvp-btn {
-      margin-top: 18px;
+      margin-top: 16px;
       width: 100%;
       padding: 10px 0;
       border-radius: 10px;
@@ -105,9 +118,9 @@
       background: #111;
     }
     .badge-line {
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 0.72rem;
-      letter-spacing: 0.19em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #aaa;
       text-align: center;
@@ -127,7 +140,7 @@
       font-size: 0.68rem;
       color: #bbb;
     }
-    input, select, textarea {
+    input {
       width: 100%;
       padding: 7px 9px;
       border-radius: 8px;
@@ -137,7 +150,6 @@
       font-family: inherit;
       font-size: 0.85rem;
     }
-    textarea { min-height: 60px; resize: vertical; }
     .submit-btn {
       margin-top: 10px;
       width: 100%;
@@ -168,31 +180,39 @@
   <div class="frame">
     <div class="system-label">SYSTEM_ALERT_</div>
 
-    <!-- spinning image -->
+    <!-- spinning image; replace src with your artwork -->
     <div class="hero-image">
-      <!-- Replace src with your own square-ish image URL -->
-      <img src="https://via.placeholder.com/600x600?text=Masquerade" alt="Mask" />
+      <img src="https://via.placeholder.com/600x600?text=Crossed+Wires" alt="Crossed Wires" />
     </div>
 
     <h1>
-      <span id="glitch" data-text="Masquerade">Masquerade</span>
+      <span id="glitch" data-text="CROSSED WIRES">CROSSED WIRES</span>
     </h1>
+    <div class="subheader">by Postcrypt Art Gallery</div>
 
     <div class="meta-block">
-      <div class="meta-label">EVENING_PROTOCOL</div>
-      <div class="meta-value">October 24th, 2025</div>
-      <div class="meta-value">22:00_HRS</div>
+      <div class="meta-label">DATE_TIME</div>
+      <div class="meta-value">Friday, December 6th, 2025</div>
+      <div class="meta-value">18:30_HRS (please arrive promptly)</div>
+      <div class="meta-sub">Special game begins right at 6:30pm.</div>
     </div>
 
     <div class="meta-block">
       <div class="meta-label">LOCATION</div>
-      <div class="meta-value">Adams Pool Theater</div>
-      <div class="meta-sub">Unseen space, hasn't been open in nearly a decade</div>
+      <div class="meta-value">St. Paul’s Chapel — Guastavino Room</div>
+      <div class="meta-sub">A hidden Postcrypt site, reactivated for the first time since 2018.</div>
+    </div>
+
+    <div class="description">
+      A classy, secret-society inspired <strong>cocktail party</strong> and socialization show,
+      featuring live music, connection games, and crossed signals.
     </div>
 
     <button class="rsvp-btn" id="scroll-rsvp">[ RSVP_NOW ]</button>
 
-    <div class="badge-line">MASKS_REQUIRED // IDENTITY_OPTIONAL</div>
+    <div class="badge-line">
+      Live music // limited capacity // invite-only
+    </div>
 
     <div class="divider"></div>
 
@@ -202,26 +222,15 @@
         <input id="name" name="name" required />
       </div>
       <div class="field">
-        <label for="email">Email*</label>
-        <input id="email" name="email" type="email" required />
+        <label for="uni">UNI*</label>
+        <input id="uni" name="uni" required />
       </div>
       <div class="field">
-        <label for="attending">Will you attend?*</label>
-        <select id="attending" name="attending" required>
-          <option value="">Select…</option>
-          <option value="Yes">Yes, I’ll be there</option>
-          <option value="No">No, sadly can’t</option>
-        </select>
+        <label for="phone">Phone*</label>
+        <input id="phone" name="phone" type="tel" required />
       </div>
-      <div class="field">
-        <label for="guests">Number of guests (incl. you)</label>
-        <input id="guests" name="guests" type="number" min="1" value="1" />
-      </div>
-      <div class="field">
-        <label for="notes">Notes / access / rituals</label>
-        <textarea id="notes" name="notes"></textarea>
-      </div>
-      <button type="submit" class="submit-btn">Transmit RSVP</button>
+
+      <button type="submit" class="submit-btn">Submit RSVP</button>
       <div class="status" id="status"></div>
     </form>
   </div>
@@ -229,7 +238,7 @@
   <script>
     // ========= GLITCHING TITLE =========
     const glitchEl = document.getElementById("glitch");
-    const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ΔΩΨΛΣΦΞ∂βµπ";
+    const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ΔΩΨΛΣΦΞ";
 
     function glitchOnce() {
       const original = glitchEl.dataset.text;
@@ -262,7 +271,7 @@
     });
 
     // ========= RSVP FORM SUBMIT =========
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfU0sEmNeUn8THiuWtbeaHYaoej3X_M4EVurDR8Pg7m-6TsS09QCq7jaG1OjShspWG/exec"; // <-- replace this
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfU0sEmNeUn8THiuWtbeaHYaoej3X_M4EVurDR8Pg7m-6TsS09QCq7jaG1OjShspWG/exec"; // <-- put your URL here
     const form = document.getElementById("rsvp-form");
     const statusEl = document.getElementById("status");
     const submitBtn = form.querySelector(".submit-btn");
@@ -282,7 +291,7 @@
         const data = await res.json();
 
         if (data.status === "success") {
-          statusEl.textContent = "RSVP received. See you in the shadows.";
+          statusEl.textContent = "RSVP received. See you at 18:30 sharp.";
           form.reset();
         } else {
           statusEl.textContent = "Glitch detected. Try again.";
