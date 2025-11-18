@@ -7,6 +7,10 @@
   <style>
     * { box-sizing: border-box; }
 
+    .title-serif {
+      font-family: "Times New Roman", Georgia, serif !important;
+    }
+    
     body {
       margin: 0;
       min-height: 100vh;
@@ -202,7 +206,7 @@
 
     .map-wrapper {
       width: 100%;
-      height: 260px;      
+      aspect-ratio: 16 / 9;
       overflow: hidden;
       border-radius: 14px;
       border: 1px solid #333;
@@ -214,8 +218,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: auto;
-      height: 130%;       
+      width: 100%;
+      height: auto;       
       transform: translate(-50%, -50%);
     }
 
@@ -320,7 +324,7 @@
     </div>
 
     <h1>
-      <span id="glitch-title" class="glitchy" data-text="CROSSED WIRES">CROSSED WIRES</span>
+      <span id="glitch-title" class="glitchy title-serif" data-text="CROSSED WIRES">CROSSED WIRES</span>
     </h1>
     <div class="subheader glitchy" data-text="by Postcrypt Art Gallery">
       by Postcrypt Art Gallery
