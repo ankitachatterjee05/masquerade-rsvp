@@ -53,7 +53,7 @@
       font-size: 2.0rem;
       margin: 0 0 4px;
     }
-    #glitch {
+    #glitch-title {
       position: relative;
       display: inline-block;
     }
@@ -178,7 +178,7 @@
 </head>
 <body>
   <div class="frame">
-    <div class="system-label">SYSTEM_ALERT_</div>
+    <div class="system-label glitchy" data-text="SYSTEM_ALERT_">SYSTEM_ALERT_</div>
 
     <!-- spinning image; replace src with your artwork -->
     <div class="hero-image">
@@ -186,31 +186,45 @@
     </div>
 
     <h1>
-      <span id="glitch" data-text="CROSSED WIRES">CROSSED WIRES</span>
+      <span id="glitch-title" class="glitchy" data-text="CROSSED WIRES">CROSSED WIRES</span>
     </h1>
-    <div class="subheader">by Postcrypt Art Gallery</div>
-
-    <div class="meta-block">
-      <div class="meta-label">DATE_TIME</div>
-      <div class="meta-value">Friday, December 6th, 2025</div>
-      <div class="meta-value">18:30_HRS (please arrive promptly)</div>
-      <div class="meta-sub">Special game begins right at 6:30pm.</div>
+    <div class="subheader glitchy" data-text="by Postcrypt Art Gallery">
+      by Postcrypt Art Gallery
     </div>
 
     <div class="meta-block">
-      <div class="meta-label">LOCATION</div>
-      <div class="meta-value">St. Paul’s Chapel — Guastavino Room</div>
-      <div class="meta-sub">A hidden Postcrypt site, reactivated for the first time since 2018.</div>
+      <div class="meta-label glitchy" data-text="DATE_TIME">DATE_TIME</div>
+      <div class="meta-value glitchy" data-text="Friday, December 6th, 2025">
+        Friday, December 6th, 2025
+      </div>
+      <div class="meta-value glitchy" data-text="18:30_HRS (please arrive promptly)">
+        18:30_HRS (please arrive promptly)
+      </div>
+      <div class="meta-sub glitchy" data-text="Special game begins right at 6:30pm.">
+        Special game begins right at 6:30pm.
+      </div>
     </div>
 
-    <div class="description">
+    <div class="meta-block">
+      <div class="meta-label glitchy" data-text="LOCATION">LOCATION</div>
+      <div class="meta-value glitchy" data-text="St. Paul’s Chapel — Guastavino Room">
+        St. Paul’s Chapel — Guastavino Room
+      </div>
+      <div class="meta-sub glitchy" data-text="A hidden Postcrypt site, reactivated for the first time since 2018.">
+        A hidden Postcrypt site, reactivated for the first time since 2018.
+      </div>
+    </div>
+
+    <div class="description glitchy" data-text="A classy, secret-society inspired cocktail party and socialization show, featuring live music, connection games, and crossed signals.">
       A classy, secret-society inspired <strong>cocktail party</strong> and socialization show,
       featuring live music, connection games, and crossed signals.
     </div>
 
-    <button class="rsvp-btn" id="scroll-rsvp">[ RSVP_NOW ]</button>
+    <button class="rsvp-btn" id="scroll-rsvp">
+      <span class="glitchy" data-text="[ RSVP_NOW ]">[ RSVP_NOW ]</span>
+    </button>
 
-    <div class="badge-line">
+    <div class="badge-line glitchy" data-text="Live music // limited capacity // invite-only">
       Live music // limited capacity // invite-only
     </div>
 
@@ -236,34 +250,67 @@
   </div>
 
   <script>
-    // ========= GLITCHING TITLE =========
-    const glitchEl = document.getElementById("glitch");
-    const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ΔΩΨΛΣΦΞ";
+    // ========= GLITCHING TEXT (multiple elements) =========
+    const SIM_MAP = {
+      "A": "Δ", "B": "β", "C": "Ϲ", "D": "Ð", "E": "Ξ", "F": "Ғ", "G": "ɢ",
+      "H": "Η", "I": "Ι", "J": "ʆ", "K": "Κ", "L": "∟", "M": "Μ", "N": "Η",
+      "O": "Ω", "P": "Ρ", "Q": "Θ", "R": "Я", "S": "Ѕ", "T": "Τ", "U": "∪",
+      "V": "∨", "W": "Ш", "X": "Χ", "Y": "Ψ", "Z": "Ζ",
+      "a": "α", "c": "ϲ", "e": "ε", "i": "ι", "o": "σ", "u": "υ", "s": "ς",
+      "t": "τ", "n": "η", "r": "г", "p": "ρ"
+    };
 
-    function glitchOnce() {
-      const original = glitchEl.dataset.text;
+    function mapCharSimilar(ch) {
+      if (SIM_MAP[ch]) return SIM_MAP[ch];
+      if (SIM_MAP[ch.toUpperCase()]) return SIM_MAP[ch.toUpperCase()];
+      return ch;
+    }
+
+    function glitchOnceForElement(el) {
+      const original = el.dataset.text || el.textContent;
+      if (!original) return;
+      el.dataset.text = original; // ensure it's stored
+
       let frame = 0;
-      const maxFrames = 18;
+      const maxFrames = 14;
 
       const timer = setInterval(() => {
         let out = "";
         for (let i = 0; i < original.length; i++) {
           const ch = original[i];
-          if (ch === " ") { out += " "; continue; }
-          if (frame < maxFrames && Math.random() < 0.5) {
-            out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          if (ch === " " || ch === "\n") {
+            out += ch;
+            continue;
+          }
+
+          // during glitch, ~40% of characters become similar symbols
+          if (frame < maxFrames && Math.random() < 0.4) {
+            out += mapCharSimilar(ch);
           } else {
             out += ch;
           }
         }
-        glitchEl.textContent = out;
+        el.textContent = out;
         frame++;
-        if (frame >= maxFrames) clearInterval(timer);
+        if (frame >= maxFrames) {
+          el.textContent = original; // restore clean text
+          clearInterval(timer);
+        }
       }, 60);
     }
 
-    glitchOnce();
-    setInterval(glitchOnce, 4000);
+    const glitchTargets = Array.from(document.querySelectorAll(".glitchy"));
+
+    function triggerGlitchWave() {
+      // glitch all targets in a subtle stagger
+      glitchTargets.forEach((el, idx) => {
+        setTimeout(() => glitchOnceForElement(el), idx * 40);
+      });
+    }
+
+    // initial + repeated waves
+    triggerGlitchWave();
+    setInterval(triggerGlitchWave, 4500);
 
     // scroll to form when button clicked
     document.getElementById("scroll-rsvp").addEventListener("click", () => {
@@ -271,7 +318,7 @@
     });
 
     // ========= RSVP FORM SUBMIT =========
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfU0sEmNeUn8THiuWtbeaHYaoej3X_M4EVurDR8Pg7m-6TsS09QCq7jaG1OjShspWG/exec"; // <-- put your URL here
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfU0sEmNeUn8THiuWtbeaHYaoej3X_M4EVurDR8Pg7m-6TsS09QCq7jaG1OjShspWG/exec"; 
     const form = document.getElementById("rsvp-form");
     const statusEl = document.getElementById("status");
     const submitBtn = form.querySelector(".submit-btn");
